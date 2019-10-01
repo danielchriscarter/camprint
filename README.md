@@ -8,7 +8,7 @@ To use the script once you have configured it, simply run it with any PDF file a
 
 For more details on use, run camprint --help.
 
-Please see [https://dcc52.user.srcf.net/camprint](my website) for more information on how to set it up.
+Please see [my website](https://dcc52.user.srcf.net/camprint) for more information on how to set it up.
 
 Bug reports and improvements (especially if they address the limitations below) are welcome!
 
