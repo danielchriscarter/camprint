@@ -4,9 +4,9 @@ The MCS printing service doesn't offer a client for personal Linux PCs, but it i
 
 The script needs personalising with your CRSid and the name of the printer you want to use.
 
-To use the script once you have configured it, simply run it with any PDF file as an argument (e.g. camprint filename.pdf) and enter your UIS password when prompted.
+To use the script once you have configured it, simply run it with any PDF file as an argument (e.g. `camprint filename.pdf`) and enter your UIS password when prompted.
 
-For more details on use, run camprint --help.
+For more details on use, run `camprint --help`.
 
 Please see [my website](https://dcc52.user.srcf.net/camprint) for more information on how to set it up.
 
