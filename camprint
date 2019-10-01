@@ -1,0 +1,56 @@
+#! /usr/bin/env bash
+
+# Copyright (C) 2019 Daniel Carter
+# Licensed under the 2-clause BSD Licence
+# See https://opensource.org/licenses/BSD-2-Clause for details
+
+# Sends a document to be printed via the MCS Linux printing service
+
+# Enter your CRSid here
+CRSID="YOUR-CRSID-GOES-HERE"
+
+# Change bw to colour to change the default printing mode
+MODE=${2:-bw}
+
+# Set your preferred printer here
+PRINTER="PRINTER-NAME-GOES-HERE"
+
+if [[ $# -eq 0 ]]; then
+    echo "Please specify a filename (or run camprint --help to find out how to use this script)"
+    exit 1
+fi
+
+if [[ "$1" = "--help" ]]; then
+    echo "This script exists to simplify printing from Linux PCs to MCS printers in Cambridge"
+    echo "If you have not already done so, you must edit the script to configure your CRSid (to authenticate printing) and the printer you want to use"
+    echo "Usage is as follows:"
+    echo "camprint FILENAME - prints FILENAME to the default printer in the default printing mode"
+    echo "camprint FILENAME bw - prints FILENAME in black and white"
+    echo "camprint FILENAME colour - prints FILENAME in colour"
+    exit 0
+fi
+
+if [[ "$CRSID" = "YOUR-CRSID-GOES-HERE" ]]; then
+    echo "You have not entered a CRSid, so the print job cannot be processed"
+    echo "Please open this script in a text editor and enter your CRSid"
+    exit 1
+fi
+
+if [[ "$PRINTER" = "PRINTER-NAME-GOES-HERE" ]]; then
+    echo "You have not entered a printer name, so the print job cannot be processed"
+    echo "Please open this script in a text editor and enter a printer name"
+    echo "To find out the name of the printer you require, please see https://help.uis.cam.ac.uk/service/printing/printing#Where"
+    exit 1
+fi
+
+if [[ "$MODE" = "bw" ]]; then
+    echo "Converting page to black and white..."
+    gs -q -sOutputFile=".$1-bw" -sDEVICE=pdfwrite -sColorConversionStrategy=Gray -dProcessColorModel=/DeviceGray -dCompatibilityLevel=1.4 "$1" < /dev/null > /dev/null
+    echo "Printing file..."
+    ssh $CRSID@linux.ds.cam.ac.uk lp -d $PRINTER -o sides=two-sided-long-edge < ".$1-bw"
+    echo "Clearing up..."
+    rm ".$1-bw"
+else
+    echo "Printing file..."
+    ssh $CRSID@linux.ds.cam.ac.uk lp -d $PRINTER -o sides=two-sided-long-edge < "$1"
+fi
